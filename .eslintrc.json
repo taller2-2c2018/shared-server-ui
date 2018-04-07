@@ -23,6 +23,9 @@
         "no-undef" : [
             "warn"
         ],
+        "no-unused-vars" : [
+            "warn"
+        ],
         "no-console" : [
             "warn"
         ],
@@ -40,5 +43,8 @@
         ],
         "react/jsx-uses-react": "warn",
         "react/jsx-uses-vars": "warn"
+    },
+    "globals": {
+        "process" : true
     }
 }
