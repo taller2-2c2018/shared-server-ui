@@ -3,10 +3,11 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 
 /* Import Other Reducers */
-//
+import authReducer from '../modules/login/authReducer'
 
 /* Combine & Export Reducers to Store */
 const appReducer = combineReducers({
+  authReducer,
   routerReducer
 })
 
