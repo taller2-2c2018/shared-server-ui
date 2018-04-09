@@ -9,8 +9,10 @@ const BASE = PROTOCOL + '://' + ROOT
 
 // Api routes phrases
 const LOGIN = 'token'
+const APPSERVERS = 'servers'
 
 export default {
   base: BASE,
-  login: BASE + LOGIN
+  login: BASE + LOGIN,
+  appServers: BASE + APPSERVERS
 }

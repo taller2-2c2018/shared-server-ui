@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 
-export class FormField extends React.Component {
+export class Campo extends React.Component {
   render() {
     return (
       <FormGroup validationState={this.props.validationState} controlId={this.props.controlId} bsSize={this.props.size}  >

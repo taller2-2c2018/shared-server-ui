@@ -8,7 +8,7 @@ import { logout } from '../modules/login/authReducer'
 export class WebNavBar extends React.Component {
   render() {
     return (
-      <Navbar inverse collapseOnSelect>
+      <Navbar fluid inverse>
         <Navbar.Header>
           <Navbar.Brand>
             <a onClick={this.props.home}>Web admin</a>

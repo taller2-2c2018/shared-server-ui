@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { loginUser, clearErrors } from './authReducer'
 import { Row, Col, Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
-import { FormField } from '../../utils/FormField'
+import { Campo } from '../../utils/Campo'
 import { CustomAlert } from '../../utils/CustomAlert'
 
 export class Login extends React.Component {
@@ -39,10 +39,10 @@ export class Login extends React.Component {
           {this.getErroresRender()}
           <Row>
             <Col lg={12}>
-              <FormField controlKey="username" controlId="usuario" size="small" type="text" label="Usuario" />
+              <Campo controlKey="username" controlId="usuario" size="small" type="text" label="Usuario" />
             </Col>
             <Col lg={12}>
-              <FormField controlKey="userpass" controlId="password" size="small" type="password" label="Contraseña" />
+              <Campo controlKey="userpass" controlId="password" size="small" type="password" label="Contraseña" />
             </Col>
           </Row>
           <Row>
