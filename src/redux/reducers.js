@@ -13,12 +13,19 @@ const appReducer = combineReducers({
   routerReducer
 })
 
+const storeToken = (data) => {
+  localStorage.setItem('token', data.token.token)
+}
+
 const rootReducer = (state, action) => {
   if (action.type === 'LOGOUT_USER') {
     state = undefined
+  } else if (action.type === 'LOGIN_USER'){
+    storeToken(action.data)
   }
-
   return appReducer(state, action)
 }
+
+
 
 export default rootReducer

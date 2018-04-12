@@ -36,7 +36,6 @@ export const loginUser = (username, password) => dispatch => {
   axios.post(api.login, body)
     .then(res => res.data)
     .then(data => {
-      storeToken(data.token)
       dispatch(login({ token: data.token, user: {email: username}}))
       dispatch(push('/'))
     })
@@ -45,11 +44,6 @@ export const loginUser = (username, password) => dispatch => {
     })
 }
 
-// aux
-
-const storeToken = (token) => {
-  localStorage.setItem('token', token.token)
-}
 
 export default (state = initialState, action) => {
   switch (action.type) {
