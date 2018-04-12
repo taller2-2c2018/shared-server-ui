@@ -1,7 +1,6 @@
+import { getConfig, getPostAppServerBody } from '../../api/apiInterfaceProvider'
 import axios from 'axios'
 import api from '../../api/api'
-import { getConfig, getPostAppServerBody } from '../../api/apiInterfaceProvider'
-
 const HYDRATE_APP_SERVERS = 'HYDRATE_APP_SERVERS'
 const QUERY_ERROR = 'QUERY_ERROR'
 const INTERNAL_ERROR = 'INTERNAL_ERROR'

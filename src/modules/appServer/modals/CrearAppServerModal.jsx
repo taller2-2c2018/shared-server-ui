@@ -1,10 +1,7 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Row, Col, Button, FormControl, FormGroup, ControlLabel, HelpBlock, Modal } from 'react-bootstrap'
 import { createAppServer } from '../appServerReducer'
-import { Dialogo } from '../../../utils/Dialogo'
-import { Campo } from '../../../utils/Campo'
 
 export class CrearAppServerModal extends React.Component {
 

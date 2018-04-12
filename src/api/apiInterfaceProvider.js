@@ -1,6 +1,9 @@
-export const getConfig = (token) => ({
+
+const getStoredToken = () => (localStorage.getItem('token'))
+
+export const getConfig = () => ({
   headers: {
-    'Authorization': token,
+    'Authorization': getStoredToken(),
   }
 })
 
