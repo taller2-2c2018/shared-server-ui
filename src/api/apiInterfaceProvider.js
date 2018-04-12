@@ -15,7 +15,7 @@ export const getPostAppServerBody = (nombre) => ({
   id: null,
   name: nombre,
   _rev: null,
-  created_by: 1,
+  created_by: null,
   created_at: null,
   last_connection: null
 })
