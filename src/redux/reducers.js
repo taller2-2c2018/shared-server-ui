@@ -4,7 +4,7 @@ import { routerReducer } from 'react-router-redux'
 
 /* Import Other Reducers */
 import authReducer from '../modules/login/authReducer'
-import appServerReducer from '../modules/appServer/appServerReducer'
+import appServerReducer from '../modules/appServerAdmin/appServerReducer'
 
 /* Combine & Export Reducers to Store */
 const appReducer = combineReducers({

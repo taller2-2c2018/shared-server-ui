@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Alert, Table } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
@@ -68,7 +68,11 @@ export class BuscarAppServerTable extends React.Component {
   render() {
 
     if (this.props.result.length == 0) {
-      return <Alert bsStyle="info">La búsqueda no trajo resultados</Alert>
+
+      return (<Fragment>
+        <br/>
+        <Alert bsStyle="info">La búsqueda no trajo resultados</Alert>
+      </Fragment>)
     }
     return (
       <Table striped hover responsive>

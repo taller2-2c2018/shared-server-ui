@@ -23,7 +23,7 @@ export class AppServerIndex extends React.Component {
 
   render() {
     return (
-      <Fragment >
+      <Fragment>
         <Row>
           <Col md={12}>
             <h2>App Servers</h2>
