@@ -58,7 +58,7 @@ export class CrearAppServerModal extends React.Component {
   onSubmit() {
     let nombre = this.nombreInput.value
     if (this.validarCreateForm(nombre)) {
-      this.props.createAppServer(nombre, this.props.token)
+      this.props.createAppServer(nombre)
       this.cerrarModal()
     }
   }
@@ -97,15 +97,9 @@ export class CrearAppServerModal extends React.Component {
 }
 
 const mapDispatch = (dispatch) => ({
-  createAppServer: (nombreAppServer, token) => {
-    dispatch(createAppServer(nombreAppServer, token))
+  createAppServer: (nombreAppServer) => {
+    dispatch(createAppServer(nombreAppServer))
   }
 })
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.authReducer.token,
-  }
-}
-
-export default connect(mapStateToProps, mapDispatch, null, { withRef: true })(CrearAppServerModal)
+export default connect(null, mapDispatch, null, { withRef: true })(CrearAppServerModal)

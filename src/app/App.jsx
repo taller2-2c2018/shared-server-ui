@@ -8,6 +8,7 @@ import Login from '../modules/login/Login'
 import WebNavBar from '../layout/WebNavBar'
 import PrivateRoute from '../utils/PrivateRoute'
 import AppServerIndex from '../modules/appServerAdmin/AppServerIndex'
+import FileIndex from '../modules/fileAdmin/FileIndex'
 import { persistor } from '../redux/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import './App.css'
@@ -30,6 +31,7 @@ class App extends React.Component {
               <Route path="/login" component={Login} />
               <PrivateRoute exact={true} path="/" permiso={true} component={Home} />
               <PrivateRoute exact={true} path="/appServer" permiso={true} component={AppServerIndex} />
+              <PrivateRoute exact={true} path="/file" permiso={true} component={FileIndex} />
             </Switch>
           </Grid>
         </PersistGate>

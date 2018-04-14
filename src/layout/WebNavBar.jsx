@@ -20,13 +20,15 @@ export class WebNavBar extends React.Component {
             <div id='navs'>
               <Nav>
                 <LinkContainer to={'/appServer'}>
-                  <NavItem eventKey={1} href="#">
+                  <NavItem eventKey={1}>
                     App Servers
                   </NavItem>
                 </LinkContainer>
-                <NavItem eventKey={2} href="#">
-                  Archivos
-                </NavItem>
+                <LinkContainer to={'/file'}>
+                  <NavItem eventKey={2}>
+                    Archivos
+                  </NavItem>
+                </LinkContainer>
               </Nav>
               <Nav pullRight>
                 <NavDropdown title={this.props.email} id="logged-user-dropdown">

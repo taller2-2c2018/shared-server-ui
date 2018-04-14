@@ -1,6 +1,5 @@
-import { getConfig, getPostAppServerBody } from '../../api/apiInterfaceProvider'
+import { getConfig, getPostAppServerBody, api } from '../../api/apiInterfaceProvider'
 import axios from 'axios'
-import api from '../../api/api'
 const HYDRATE_APP_SERVERS = 'HYDRATE_APP_SERVERS'
 const QUERY_ERROR = 'QUERY_ERROR'
 const INTERNAL_ERROR = 'INTERNAL_ERROR'
@@ -24,8 +23,8 @@ export const hydrateAppServers = data => ({
 })
 
 // Thunks
-export const getAppServers = (token) => dispatch => {
-  let config = getConfig(token)
+export const getAppServers = () => dispatch => {
+  let config = getConfig()
   axios.get(api.appServers, config)
     .then(res => res.data)
     .then(data => {
@@ -36,12 +35,12 @@ export const getAppServers = (token) => dispatch => {
     })
 }
 
-export const createAppServer = (nombre, token) => dispatch => {
-  let config = getConfig(token)
+export const createAppServer = (nombre) => dispatch => {
+  let config = getConfig()
   let body = getPostAppServerBody(nombre)
   axios.post(api.appServers, body, config)
     .then(() => {
-      dispatch(getAppServers(token))
+      dispatch(getAppServers())
     })
     .catch(err => {
       dispatch(queryError(err))
@@ -51,7 +50,7 @@ export const createAppServer = (nombre, token) => dispatch => {
 const fetchAppServersTable = (data) => {
   let returnValue = []
   data.map(function (rowObject) {
-    returnValue.push({ id: rowObject.id, Id: rowObject.id, name: rowObject.name, created_by: rowObject.created_by, created_at: rowObject.created_at })
+    returnValue.push({ id: rowObject.id, name: rowObject.name, created_by: rowObject.created_by, created_at: rowObject.created_at })
   })
   return returnValue
 }

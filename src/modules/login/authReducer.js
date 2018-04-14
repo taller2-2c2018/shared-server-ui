@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { push } from 'react-router-redux'
-import api from '../../api/api'
+import { api } from '../../api/apiInterfaceProvider'
 const LOGIN_USER = 'LOGIN_USER'
 const LOGOUT_USER = 'LOGOUT_USER'
 const LOGIN_ERROR = 'LOGIN_ERROR'

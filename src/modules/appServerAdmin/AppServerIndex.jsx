@@ -14,7 +14,7 @@ export class AppServerIndex extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getAppServers(this.props.token)
+    this.props.getAppServers()
   }
 
   abrirCrearAppServerModal() {
@@ -26,7 +26,7 @@ export class AppServerIndex extends React.Component {
       <Fragment>
         <Row>
           <Col md={12}>
-            <h2>App Servers</h2>
+            <h3>Administración de app servers</h3>
             <Button bsStyle="success" onClick={this.abrirCrearAppServerModal} className="pull-right" bsSize="xsmall">
               <i className="fa fa-plus" aria-hidden="true">&nbsp;</i> Nuevo App server
             </Button>
@@ -49,10 +49,4 @@ const mapDispatch = (dispatch) => ({
   }
 })
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.authReducer.token,
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatch)(AppServerIndex))
+export default withRouter(connect(null, mapDispatch)(AppServerIndex))

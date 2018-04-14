@@ -4,7 +4,7 @@ import { Alert, Table } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import history from '../../redux/history'
 
-export class BuscarAppServerTable extends React.Component {
+export class AppServerTable extends React.Component {
 
   constructor() {
     super()
@@ -21,15 +21,10 @@ export class BuscarAppServerTable extends React.Component {
 
   getHeaders() {
     let headers = ['id', 'Nombre', 'Creado por', 'Fecha de alta'], i, returnHeaders = []
-
-    for (i in headers) {
-      returnHeaders.push(
-        <th key={i}>
-          {headers[i]}
-        </th>
-      )
+    for (i in headers) { 
+      returnHeaders.push(<th key={i}>{headers[i]}</th>) 
     }
-    returnHeaders.push(<th key={'acciones'} ></th>)
+    returnHeaders.push(<th className="text-right" key={'acciones'} ></th>)
     return returnHeaders
   }
 
@@ -41,15 +36,13 @@ export class BuscarAppServerTable extends React.Component {
       var returnValue = []
 
       for (i in rowObject) {
-        if (i != 'id')
-          returnValue.push(
-            <td key={i}>
-              {rowObject[i]}
-            </td>)
+        returnValue.push(
+          <td key={i}>
+            {rowObject[i]}
+          </td>)
       }
-
       returnValue.push(
-        <td colSpan="1" key={'acciones'}>
+        <td className="text-right" colSpan="1" key={'acciones'}>
           <a href="javascript:void(0)">
             <i className="fa fa-pencil" title="Editar" onClick={() => editAction(rowObject.id)}></i>
           </a>&nbsp;&nbsp;&nbsp;
@@ -69,13 +62,14 @@ export class BuscarAppServerTable extends React.Component {
 
     if (this.props.result.length == 0) {
 
-      return (<Fragment>
-        <br/>
-        <Alert bsStyle="info">La búsqueda no trajo resultados</Alert>
-      </Fragment>)
+      return (
+        <Fragment>
+          <br />
+          <Alert bsStyle="info">La búsqueda no trajo resultados</Alert>
+        </Fragment>)
     }
     return (
-      <Table striped hover responsive>
+      <Table condensed striped hover responsive>
         <thead>
           <tr>
             {this.getHeaders()}
@@ -95,4 +89,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, null)(BuscarAppServerTable))
+export default withRouter(connect(mapStateToProps, null)(AppServerTable))
