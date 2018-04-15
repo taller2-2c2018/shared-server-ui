@@ -54,7 +54,6 @@ export class FileTable extends React.Component {
             {rowObject[i]}
           </td>)
       }
-
       returnValue.push(
         <td colSpan="2" className="text-right" key={'acciones'}>
           <Button bsSize="xsmall" bsStyle="primary" onClick={() => downloadAction(rowObject.id, rowObject.filename)}>
@@ -75,7 +74,6 @@ export class FileTable extends React.Component {
   }
 
   render() {
-
     if (this.props.result.length == 0) {
       return (<Fragment>
         <br />

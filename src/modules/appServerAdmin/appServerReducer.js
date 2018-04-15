@@ -47,6 +47,18 @@ export const createAppServer = (nombre) => dispatch => {
     })
 }
 
+export const deleteAppServer = (serverId) => dispatch =>{
+  let config = getConfig()
+  axios.delete(api.appServer(serverId), config)
+    .then(res => res.data.data)
+    .then(() => {
+      dispatch(getAppServers())
+    })
+    .catch(err => {
+      dispatch(queryError(err))
+    })
+} 
+
 const fetchAppServersTable = (data) => {
   let returnValue = []
   data.map(function (rowObject) {

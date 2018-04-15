@@ -11,6 +11,9 @@ export const api = {
   login: BASE + LOGIN,
   appServers: BASE + APPSERVERS,
   files: BASE + FILES,
+  appServer: (id) => {
+    return BASE + APPSERVERS + '/' + id
+  },
   file: (id) => {
     return BASE + FILES + '/' + id
   },
@@ -38,8 +41,6 @@ export const getFileConfig = () => ({
   },
   responseType: 'blob'
 })
-
-
 
 export const getErrorResponse = (err) => {
   return { status: err.response.status, message: err.response.data.message.msg }

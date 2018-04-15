@@ -6,6 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { logout } from '../modules/login/authReducer'
 
 export class WebNavBar extends React.Component {
+
   render() {
     return (
       <Navbar fluid inverse>
@@ -20,7 +21,7 @@ export class WebNavBar extends React.Component {
             <div id='navs'>
               <Nav>
                 <LinkContainer to={'/appServer'}>
-                  <NavItem eventKey={1}>
+                  <NavItem  eventKey={1}>
                     App Servers
                   </NavItem>
                 </LinkContainer>

@@ -74,7 +74,6 @@ const fetchFilesTable = (data) => {
   return returnValue
 }
 
-
 export default (state = initialState, action) => {
   switch (action.type) {
   case HYDRATE_FILES:
