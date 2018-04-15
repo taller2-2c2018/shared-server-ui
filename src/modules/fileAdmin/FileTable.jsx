@@ -5,21 +5,23 @@ import FileDownload from 'js-file-download'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import { getFileConfig, api } from '../../api/apiInterfaceProvider'
+import DeleteFileModal from './modals/DeleteFileModal'
 
 export class FileTable extends React.Component {
 
   constructor() {
     super()
     this.getHeaders = this.getHeaders.bind(this)
+    this.deleteAction = this.deleteAction.bind(this)
   }
 
-  deleteAction() {
-    return
+  deleteAction(fileId, fileName) {
+    this.DeleteFileModal.wrappedInstance.abrirModal(fileId, fileName)
   }
 
   downloadAction(id, filename) {
     let config = getFileConfig()
-    axios.get(api.get_file(id), config)
+    axios.get(api.file(id), config)
       .then((response) => {
         FileDownload(response.data, filename)
       })
@@ -59,7 +61,7 @@ export class FileTable extends React.Component {
             <i className="fa fa-download action" title="Descargar"></i>&nbsp;
             Descargar
           </Button>&nbsp;&nbsp;
-          <Button bsSize="xsmall" bsStyle="danger" onClick={() => deleteAction(rowObject.id)}>
+          <Button bsSize="xsmall" bsStyle="danger" onClick={() => deleteAction(rowObject.id, rowObject.filename)}>
             <i className="fa fa-remove action" title="Eliminar"></i>&nbsp;
             Eliminar
           </Button>
@@ -81,16 +83,19 @@ export class FileTable extends React.Component {
       </Fragment>)
     }
     return (
-      <Table condensed striped hover responsive>
-        <thead>
-          <tr>
-            {this.getHeaders()}
-          </tr>
-        </thead>
-        <tbody>
-          {this.getTableRows()}
-        </tbody>
-      </Table>
+      <Fragment>
+        <Table condensed striped hover responsive>
+          <thead>
+            <tr>
+              {this.getHeaders()}
+            </tr>
+          </thead>
+          <tbody>
+            {this.getTableRows()}
+          </tbody>
+        </Table>
+        <DeleteFileModal ref={(modal) => { this.DeleteFileModal = modal }} />
+      </Fragment>
     )
   }
 }
@@ -100,5 +105,7 @@ const mapStateToProps = (state) => {
     result: state.filesReducer.result
   }
 }
+
+
 
 export default withRouter(connect(mapStateToProps, null)(FileTable))

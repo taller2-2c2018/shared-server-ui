@@ -35,9 +35,9 @@ export const getFiles = () => dispatch => {
     })
 }
 
-export const uploadFile = (nombre) => dispatch => {
+export const uploadFile = (file) => dispatch => {
   let config = getMultipartFormDataConfig()
-  let body = getPostFileUploadBody(nombre)
+  let body = getPostFileUploadBody(file)
   axios.post(api.files, body, config)
     .then(res => res.data.data)
     .then(() => {
@@ -47,6 +47,18 @@ export const uploadFile = (nombre) => dispatch => {
       dispatch(queryError(err))
     })
 }
+
+export const deleteFile = (fileId) => dispatch =>{
+  let config = getConfig()
+  axios.delete(api.file(fileId), config)
+    .then(res => res.data.data)
+    .then(() => {
+      dispatch(getFiles())
+    })
+    .catch(err => {
+      dispatch(queryError(err))
+    })
+} 
 
 const fetchFilesTable = (data) => {
   let returnValue = []

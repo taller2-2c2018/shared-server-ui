@@ -11,7 +11,7 @@ export const api = {
   login: BASE + LOGIN,
   appServers: BASE + APPSERVERS,
   files: BASE + FILES,
-  get_file: (id) => {
+  file: (id) => {
     return BASE + FILES + '/' + id
   },
 }
