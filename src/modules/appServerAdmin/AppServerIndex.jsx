@@ -5,7 +5,6 @@ import { Row, Col, Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import AppServerTable from './AppServerTable'
 import CrearAppServerModal from './modals/CrearAppServerModal'
-import { SomeComponent } from './appServerDetail'
 
 export class AppServerIndex extends React.Component {
   constructor() {
@@ -39,7 +38,6 @@ export class AppServerIndex extends React.Component {
           </Col>
         </Row>
         <CrearAppServerModal ref={(modal) => { this.crearAppServerModal = modal }} />
-        <SomeComponent />
       </Fragment>
     )
   }
