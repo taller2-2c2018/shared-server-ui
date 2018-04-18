@@ -2,8 +2,10 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Alert, Table, Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
-import history from '../../redux/history'
 import DeleteAppServerModal from './modals/DeleteAppServerModal'
+import { getAppServerDetail } from './appServerReducer'
+import history from '../../redux/history'
+
 
 export class AppServerTable extends React.Component {
 
@@ -11,10 +13,11 @@ export class AppServerTable extends React.Component {
     super()
     this.getHeaders = this.getHeaders.bind(this)
     this.deleteAction = this.deleteAction.bind(this)
+    this.editAction = this.editAction.bind(this)
   }
 
   editAction(id) {
-    history.push('/appServers/' + id)
+    history.push('/appServer/' + id)
   }
 
   deleteAction(appServerId, appServerName) {
@@ -31,7 +34,7 @@ export class AppServerTable extends React.Component {
   }
 
   getTableRows() {
-    let data = this.props.result, editAction = this.editAction, deleteAction = this.deleteAction
+    let data = this.props.appServers, editAction = this.editAction, deleteAction = this.deleteAction
 
     var tableRow = data.map(function (rowObject) {
       let i
@@ -64,7 +67,7 @@ export class AppServerTable extends React.Component {
 
   render() {
 
-    if (this.props.result.length == 0) {
+    if (this.props.appServers.length == 0) {
 
       return (
         <Fragment>
@@ -90,10 +93,15 @@ export class AppServerTable extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    result: state.appServerReducer.result
-  }
-}
+const mapStateToProps = (state) => ({
+  appServers: state.appServerReducer.appServers
+})
 
-export default withRouter(connect(mapStateToProps, null)(AppServerTable))
+
+const mapDispatch = (dispatch) => ({
+  getAppServerDetail: (id) => {
+    dispatch(getAppServerDetail(id))
+  }
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatch)(AppServerTable))

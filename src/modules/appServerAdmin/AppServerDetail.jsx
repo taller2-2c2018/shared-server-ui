@@ -1,36 +1,63 @@
-import React from 'react'
-import 'react-vis/dist/style.css'
+import React, { Fragment } from 'react'
+import { connect } from 'react-redux'
+import { getAppServerDetail } from './appServerReducer'
+import { Row, Col } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom'
+import RequestsGraph from './RequestsGraph'
+import { Cargando } from '../../utils/Cargando'
 
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  HorizontalGridLines,
-  VerticalGridLines,
-  LineSeriesCanvas
-} from 'react-vis'
 
-export default class Example extends React.Component {
+export class AppServerIndex extends React.Component {
+  constructor() {
+    super()
+  }
+
+  componentDidMount() {
+    this.props.getAppServerDetail(this.props.match.params.id)
+  }
+
+  abrirCrearAppServerModal() {
+    this.crearAppServerModal.wrappedInstance.abrirModal()
+  }
+
   render() {
-    return (
-      <XYPlot
-        width={800}
-        height={300}>
-        <HorizontalGridLines />
-        <VerticalGridLines />
-        <XAxis title="Hora" position="start"/>
-        <YAxis title="Requests"/>
-        <LineSeriesCanvas
-          className="first-series"
-          data={[
-            {x: 1, y: 3},
-            {x: 2, y: 5},
-            {x: 3, y: 100},
-            {x: 4, y: 12},
-            {x: 4, y: 234},
-            {x: 34, y: 432}
-          ]}/>
-      </XYPlot>
-    )
+    if (this.props.active != null) {
+      return (
+        <Fragment>
+          <Row>
+            <Col md={12}>
+              <h2>{this.props.active.name} </h2>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12}>
+              <h4>Métricas</h4>            
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <RequestsGraph />
+            </Col>
+            <Col md={6}>
+              <p>sdfasdfasf</p>
+            </Col>
+          </Row>
+        </Fragment>
+      )
+    } else {
+      return <Cargando />
+    }
   }
 }
+
+const mapStateToProps = (state) => ({
+  active: state.appServerReducer.active
+})
+
+const mapDispatch = (dispatch) => ({
+  getAppServerDetail: (id) => {
+    dispatch(getAppServerDetail(id))
+  }
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatch)(AppServerIndex))
