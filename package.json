@@ -65,6 +65,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "start-docker": "npm install && node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },
