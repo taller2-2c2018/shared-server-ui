@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Label } from 'react-bootstrap'
 
 import {
-  XYPlot,
+  FlexibleWidthXYPlot,
   XAxis,
   YAxis,
   HorizontalGridLines,
@@ -33,10 +33,9 @@ export class RequestsGraph extends React.Component {
 
   render() {
     return (
-      <XYPlot
+      <FlexibleWidthXYPlot
         onMouseLeave={this._onMouseLeave}
         xType="time"
-        width={800}
         height={300}>
         <HorizontalGridLines />
         <VerticalGridLines />
@@ -56,7 +55,7 @@ export class RequestsGraph extends React.Component {
             }
           </div>
         </Crosshair >
-      </XYPlot >
+      </FlexibleWidthXYPlot >
     )
   }
 }
