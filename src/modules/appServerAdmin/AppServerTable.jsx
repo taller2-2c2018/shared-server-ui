@@ -25,7 +25,7 @@ export class AppServerTable extends React.Component {
   }
 
   getHeaders() {
-    let headers = ['id', 'Nombre', 'Creado por', 'Fecha de alta'], i, returnHeaders = []
+    let headers = ['id', 'Nombre', 'Url','Creado por', 'Fecha de alta'], i, returnHeaders = []
     for (i in headers) {
       returnHeaders.push(<th key={i}>{headers[i]}</th>)
     }

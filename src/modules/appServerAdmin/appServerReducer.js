@@ -81,9 +81,9 @@ export const getAppServerDetail = (appServerId) => dispatch => {
   dispatch(fetchMetrics())
 }
 
-export const createAppServer = (nombre) => dispatch => {
+export const createAppServer = (nombre, url) => dispatch => {
   let config = getConfig()
-  let body = getPostAppServerBody(nombre)
+  let body = getPostAppServerBody(nombre, url)
   axios.post(api.appServers, body, config)
     .then(() => {
       dispatch(getAppServers())
@@ -108,7 +108,7 @@ export const deleteAppServer = (serverId) => dispatch =>{
 const fetchAppServersTable = (data) => {
   let returnValue = []
   data.map(function (rowObject) {
-    returnValue.push({ id: rowObject.id, name: rowObject.name, created_by: rowObject.created_by, created_at: rowObject.created_at })
+    returnValue.push({ id: rowObject.id, name: rowObject.name, url: rowObject.url, created_by: rowObject.created_by, created_at: rowObject.created_at })
   })
   return returnValue
 }

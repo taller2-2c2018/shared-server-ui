@@ -8,28 +8,28 @@ export class CrearAppServerModal extends React.Component {
   constructor() {
     super()
     this.state = {
-      createForm: {
-        nombre: { error: false, mensaje: '' },
-      }
+      createForm: this.getNewFormState()
     }
     this.abrirModal = this.abrirModal.bind(this)
     this.cerrarModal = this.cerrarModal.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
   }
 
-  resetCreateForm() {
-    let createForm = {
+  getNewFormState() {
+    return {
       nombre: { error: false, mensaje: '' },
+      url: { error: false, mensaje: ''}
     }
-    this.setState({ ...this.state, createForm: createForm })
   }
 
-  validarCreateForm(nombre) {
+  resetCreateForm() {
+    this.setState({ ...this.state, createForm: this.getNewFormState() })
+  }
+
+  validarCreateForm(nombre, url) {
     let formOk = true
 
-    let createForm = {
-      nombre: { error: false, mensaje: '' },
-    }
+    let createForm = this.getNewFormState()
 
     if (nombre == null || nombre == '') {
       createForm.nombre.error = true
@@ -38,6 +38,15 @@ export class CrearAppServerModal extends React.Component {
     } else {
       createForm.nombre.error = false
       createForm.nombre.mensaje = ''
+    }
+
+    if (url == null || url == '') {
+      createForm.url.error = true
+      createForm.url.mensaje = 'Este campo es obligatorio'
+      formOk = false
+    } else {
+      createForm.url.error = false
+      createForm.url.mensaje = ''
     }
 
     this.setState({ ...this.state, createForm: createForm })
@@ -57,8 +66,9 @@ export class CrearAppServerModal extends React.Component {
 
   onSubmit() {
     let nombre = this.nombreInput.value
-    if (this.validarCreateForm(nombre)) {
-      this.props.createAppServer(nombre)
+    let url = this.urlInput.value
+    if (this.validarCreateForm(nombre, url)) {
+      this.props.createAppServer(nombre, url)
       this.cerrarModal()
     }
   }
@@ -86,6 +96,18 @@ export class CrearAppServerModal extends React.Component {
                 <HelpBlock bsSize="small" >{this.state.createForm.nombre.mensaje}</HelpBlock>}
             </Col>
           </Row>
+          <Row key={'formCreateRow2'}>
+            <Col md={12} lg={12}>
+              <FormGroup validationState={(this.state.createForm.url.error)? 'error' : null}>
+                <ControlLabel>Url</ControlLabel>
+                <FormControl inputRef={input => this.urlInput = input} key="urlInput" bsSize="small"
+                  type="text" placeholder="ingresá una url">
+                </FormControl>
+              </FormGroup>
+              {this.state.createForm.url.error &&
+                <HelpBlock bsSize="small" >{this.state.createForm.url.mensaje}</HelpBlock>}
+            </Col>
+          </Row>
         </Modal.Body>
         <Modal.Footer>
           <Button bsSize={'small'} onClick={this.cerrarModal}>Cancelar</Button>&nbsp;
@@ -97,8 +119,8 @@ export class CrearAppServerModal extends React.Component {
 }
 
 const mapDispatch = (dispatch) => ({
-  createAppServer: (nombreAppServer) => {
-    dispatch(createAppServer(nombreAppServer))
+  createAppServer: (nombreAppServer, urlAppServer) => {
+    dispatch(createAppServer(nombreAppServer, urlAppServer))
   }
 })
 

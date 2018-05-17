@@ -46,9 +46,10 @@ export const getErrorResponse = (err) => {
   return { status: err.response.status, message: err.response.data.message.msg }
 }
 
-export const getPostAppServerBody = (nombre) => ({
+export const getPostAppServerBody = (nombre, url) => ({
   id: null,
   name: nombre,
+  url: url,
   _rev: null,
   created_by: null,
   created_at: null,
