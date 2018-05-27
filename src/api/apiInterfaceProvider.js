@@ -5,18 +5,23 @@ import { BASE } from './api'
 const LOGIN = 'token'
 const APPSERVERS = 'servers'
 const FILES = 'files'
+const USERS = 'users'
 
 export const api = {
   base: BASE,
   login: BASE + LOGIN,
   appServers: BASE + APPSERVERS,
   files: BASE + FILES,
+  users: BASE + USERS,
   appServer: (id) => {
     return BASE + APPSERVERS + '/' + id
   },
   file: (id) => {
     return BASE + FILES + '/' + id
   },
+  user: (id) => {
+    return BASE + USERS + '/' + id
+  }
 }
 
 const getStoredToken = () => (localStorage.getItem('token'))
@@ -47,6 +52,16 @@ export const getErrorResponse = (err) => {
 }
 
 export const getPostAppServerBody = (nombre, url) => ({
+  id: null,
+  name: nombre,
+  url: url,
+  _rev: null,
+  created_by: null,
+  created_at: null,
+  last_connection: null
+})
+
+export const getPostUserBody = (nombre, url) => ({
   id: null,
   name: nombre,
   url: url,
