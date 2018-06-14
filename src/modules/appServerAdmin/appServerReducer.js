@@ -1,4 +1,4 @@
-import { getConfig, getNullConfig, getPostAppServerBody, api } from '../../api/apiInterfaceProvider'
+import { getConfig, getPostAppServerBody, api } from '../../api/apiInterfaceProvider'
 import axios from 'axios'
 import moment from 'moment'
 import _ from 'lodash'
@@ -8,6 +8,7 @@ const SET_ACTIVE_APP_SERVER = 'SET_ACTIVE_APP_SERVER'
 const QUERY_ERROR = 'QUERY_ERROR'
 const INTERNAL_ERROR = 'INTERNAL_ERROR'
 const SET_ACTIVE_METRICS = 'SET_ACTIVE_METRICS'
+const SET_UNACTIVE_METRICS = 'SET_UNACTIVE_METRICS'
 
 const initialState = {
   appServers: [],
@@ -39,6 +40,11 @@ export const setActiveMetricsData = data => ({
   type: SET_ACTIVE_METRICS, data
 })
 
+export const setUnactiveMetricsData = data => ({
+  type: SET_UNACTIVE_METRICS, data
+})
+
+
 // Thunks
 export const getAppServers = () => dispatch => {
   let config = getConfig()
@@ -52,41 +58,29 @@ export const getAppServers = () => dispatch => {
     })
 }
 
-export const fetchMetrics = (url) => dispatch => {
-  // let data = [
-  //   {x: moment('2018-01-01 10:00:00', 'Y-m-d H:m:s').valueOf(), y: 500},
-  //   {x: moment('2018-01-01 11:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
-  //   {x: moment('2018-01-01 12:00:00', 'Y-m-d H:m:s').valueOf(), y: 700},
-  //   {x: moment('2018-01-01 13:00:00', 'Y-m-d H:m:s').valueOf(), y: 700},
-  //   {x: moment('2018-01-01 14:00:00', 'Y-m-d H:m:s').valueOf(), y: 200},
-  //   {x: moment('2018-01-01 15:00:00', 'Y-m-d H:m:s').valueOf(), y: 400},
-  //   {x: moment('2018-01-01 16:00:00', 'Y-m-d H:m:s').valueOf(), y: 500},
-  //   {x: moment('2018-01-01 17:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
-  //   {x: moment('2018-01-01 18:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
-  //   {x: moment('2018-01-01 19:00:00', 'Y-m-d H:m:s').valueOf(), y: 1000},
-  //   {x: moment('2018-01-01 20:00:00', 'Y-m-d H:m:s').valueOf(), y: 1000},
-  //   {x: moment('2018-01-01 21:00:00', 'Y-m-d H:m:s').valueOf(), y: 700},
-  //   {x: moment('2018-01-01 22:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
-  //   {x: moment('2018-01-01 23:00:00', 'Y-m-d H:m:s').valueOf(), y: 500},
-  //   {x: moment('2018-01-02 00:00:00', 'Y-m-d H:m:s').valueOf(), y: 400},
-  //   {x: moment('2018-01-02 01:00:00', 'Y-m-d H:m:s').valueOf(), y: 800},
-  //   {x: moment('2018-01-02 02:00:00', 'Y-m-d H:m:s').valueOf(), y: 900},
-  // ]
-  let config = getNullConfig()
-  axios.get(url + '/monitor', config)
+export const fetchMetrics = (server) => dispatch => {
+  let config = getConfig()
+  axios.get(server.url + '/monitor/', config)
     .then(res => res.data)
     .then(data => {
       dispatch(setActiveMetricsData(data))
     })
     .catch(() => {
-      dispatch(setActiveMetricsData(null))
+      dispatch(setUnactiveMetricsData(null))
     })
 }
 
-export const getAppServerDetail = (appServerId,url) => dispatch => {
-  console.log(url)
-  dispatch(setActiveAppServer(appServerId))
-  dispatch(fetchMetrics(url))
+export const getAppServerDetail = (appServerId) => dispatch => {
+  let config = getConfig()
+  axios.get(api.appServers+'/'+appServerId, config)
+    .then(res => res.data)
+    .then(data => {
+      dispatch(setActiveAppServer(appServerId))
+      dispatch(fetchMetrics(data.Server))
+    })
+    .catch(err => {
+      dispatch(queryError(err))
+    })
 }
 
 export const createAppServer = (nombre, url) => dispatch => {
@@ -126,8 +120,28 @@ const fetchAppServerById = (appServers, id) => {
 }
 
 const parseMetrics = (data) => {
-  console.log(data)
-  return data
+  let returnValue = []
+  if(data){
+    for (let key in data) {
+      let endpoints = data[key]
+      endpoints.map(function (rowObject) {
+        returnValue.push({
+          x: moment(rowObject.day+' '+rowObject.hour+':00:00', 'YYYY-MM-DD HH:mm:ss').valueOf(),
+          y: rowObject.hour
+        })
+      })
+    }              
+    returnValue.sort(function (a, b) {
+      if (a.x > b.x) {
+        return 1
+      }
+      if (a.x < b.x) {
+        return -1
+      }
+      return 0
+    })
+  }
+  return returnValue
 }
 
 export default (state = initialState, action) => {
@@ -146,7 +160,12 @@ export default (state = initialState, action) => {
     return {
       ...state,
       activeMetricsData: parseMetrics(action.data)
-    }  
+    }
+  case SET_UNACTIVE_METRICS:
+    return {
+      ...state,
+      activeMetricsData: null
+    }      
   default:
     return state
   }

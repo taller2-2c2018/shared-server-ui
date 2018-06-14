@@ -16,9 +16,8 @@ export class AppServerTable extends React.Component {
     this.editAction = this.editAction.bind(this)
   }
 
-  editAction(id,url) {
-    this.props.getAppServerDetail(id,url)
-    // history.push('/appServer/' + id)
+  editAction(id) {
+    history.push('/appServer/' + id)
   }
 
   deleteAction(appServerId, appServerName) {
@@ -100,8 +99,8 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatch = (dispatch) => ({
-  getAppServerDetail: (id,url) => {
-    dispatch(getAppServerDetail(id,url))
+  getAppServerDetail: (id) => {
+    dispatch(getAppServerDetail(id))
   }
 })
 
