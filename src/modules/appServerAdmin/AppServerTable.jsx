@@ -48,7 +48,7 @@ export class AppServerTable extends React.Component {
       }
       returnValue.push(
         <td className="text-right" colSpan="1" key={'acciones'}>
-          <Button bsSize="xsmall" bsStyle="primary" onClick={() => editAction(rowObject.id)}>
+          <Button bsSize="xsmall" bsStyle="primary" onClick={() => editAction(rowObject.id,rowObject.url)}>
             <i className="fa fa-line-chart action" title="Descargar"></i>&nbsp;
             Ver detalle
           </Button>&nbsp;&nbsp;
