@@ -16,8 +16,9 @@ export class AppServerTable extends React.Component {
     this.editAction = this.editAction.bind(this)
   }
 
-  editAction(id) {
-    history.push('/appServer/' + id)
+  editAction(id,url) {
+    this.props.getAppServerDetail(id,url)
+    // history.push('/appServer/' + id)
   }
 
   deleteAction(appServerId, appServerName) {
@@ -48,7 +49,7 @@ export class AppServerTable extends React.Component {
       }
       returnValue.push(
         <td className="text-right" colSpan="1" key={'acciones'}>
-          <Button bsSize="xsmall" bsStyle="primary" onClick={() => editAction(rowObject.id)}>
+          <Button bsSize="xsmall" bsStyle="primary" onClick={() => editAction(rowObject.id,rowObject.url)}>
             <i className="fa fa-line-chart action" title="Descargar"></i>&nbsp;
             Ver detalle
           </Button>&nbsp;&nbsp;
@@ -99,8 +100,8 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatch = (dispatch) => ({
-  getAppServerDetail: (id) => {
-    dispatch(getAppServerDetail(id))
+  getAppServerDetail: (id,url) => {
+    dispatch(getAppServerDetail(id,url))
   }
 })
 

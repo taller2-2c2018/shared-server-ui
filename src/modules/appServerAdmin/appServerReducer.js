@@ -1,4 +1,4 @@
-import { getConfig, getPostAppServerBody, api } from '../../api/apiInterfaceProvider'
+import { getConfig, getNullConfig, getPostAppServerBody, api } from '../../api/apiInterfaceProvider'
 import axios from 'axios'
 import moment from 'moment'
 import _ from 'lodash'
@@ -52,33 +52,41 @@ export const getAppServers = () => dispatch => {
     })
 }
 
-export const fetchMetrics = () => dispatch => {
-  let data = [
-    {x: moment('2018-01-01 10:00:00', 'Y-m-d H:m:s').valueOf(), y: 500},
-    {x: moment('2018-01-01 11:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
-    {x: moment('2018-01-01 12:00:00', 'Y-m-d H:m:s').valueOf(), y: 700},
-    {x: moment('2018-01-01 13:00:00', 'Y-m-d H:m:s').valueOf(), y: 700},
-    {x: moment('2018-01-01 14:00:00', 'Y-m-d H:m:s').valueOf(), y: 200},
-    {x: moment('2018-01-01 15:00:00', 'Y-m-d H:m:s').valueOf(), y: 400},
-    {x: moment('2018-01-01 16:00:00', 'Y-m-d H:m:s').valueOf(), y: 500},
-    {x: moment('2018-01-01 17:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
-    {x: moment('2018-01-01 18:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
-    {x: moment('2018-01-01 19:00:00', 'Y-m-d H:m:s').valueOf(), y: 1000},
-    {x: moment('2018-01-01 20:00:00', 'Y-m-d H:m:s').valueOf(), y: 1000},
-    {x: moment('2018-01-01 21:00:00', 'Y-m-d H:m:s').valueOf(), y: 700},
-    {x: moment('2018-01-01 22:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
-    {x: moment('2018-01-01 23:00:00', 'Y-m-d H:m:s').valueOf(), y: 500},
-    {x: moment('2018-01-02 00:00:00', 'Y-m-d H:m:s').valueOf(), y: 400},
-    {x: moment('2018-01-02 01:00:00', 'Y-m-d H:m:s').valueOf(), y: 800},
-    {x: moment('2018-01-02 02:00:00', 'Y-m-d H:m:s').valueOf(), y: 900},
-  ]
-
-  dispatch(setActiveMetricsData(data))
+export const fetchMetrics = (url) => dispatch => {
+  // let data = [
+  //   {x: moment('2018-01-01 10:00:00', 'Y-m-d H:m:s').valueOf(), y: 500},
+  //   {x: moment('2018-01-01 11:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
+  //   {x: moment('2018-01-01 12:00:00', 'Y-m-d H:m:s').valueOf(), y: 700},
+  //   {x: moment('2018-01-01 13:00:00', 'Y-m-d H:m:s').valueOf(), y: 700},
+  //   {x: moment('2018-01-01 14:00:00', 'Y-m-d H:m:s').valueOf(), y: 200},
+  //   {x: moment('2018-01-01 15:00:00', 'Y-m-d H:m:s').valueOf(), y: 400},
+  //   {x: moment('2018-01-01 16:00:00', 'Y-m-d H:m:s').valueOf(), y: 500},
+  //   {x: moment('2018-01-01 17:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
+  //   {x: moment('2018-01-01 18:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
+  //   {x: moment('2018-01-01 19:00:00', 'Y-m-d H:m:s').valueOf(), y: 1000},
+  //   {x: moment('2018-01-01 20:00:00', 'Y-m-d H:m:s').valueOf(), y: 1000},
+  //   {x: moment('2018-01-01 21:00:00', 'Y-m-d H:m:s').valueOf(), y: 700},
+  //   {x: moment('2018-01-01 22:00:00', 'Y-m-d H:m:s').valueOf(), y: 600},
+  //   {x: moment('2018-01-01 23:00:00', 'Y-m-d H:m:s').valueOf(), y: 500},
+  //   {x: moment('2018-01-02 00:00:00', 'Y-m-d H:m:s').valueOf(), y: 400},
+  //   {x: moment('2018-01-02 01:00:00', 'Y-m-d H:m:s').valueOf(), y: 800},
+  //   {x: moment('2018-01-02 02:00:00', 'Y-m-d H:m:s').valueOf(), y: 900},
+  // ]
+  let config = getNullConfig()
+  axios.get(url + '/monitor', config)
+    .then(res => res.data)
+    .then(data => {
+      dispatch(setActiveMetricsData(data))
+    })
+    .catch(() => {
+      dispatch(setActiveMetricsData(null))
+    })
 }
 
-export const getAppServerDetail = (appServerId) => dispatch => {
+export const getAppServerDetail = (appServerId,url) => dispatch => {
+  console.log(url)
   dispatch(setActiveAppServer(appServerId))
-  dispatch(fetchMetrics())
+  dispatch(fetchMetrics(url))
 }
 
 export const createAppServer = (nombre, url) => dispatch => {
@@ -117,6 +125,10 @@ const fetchAppServerById = (appServers, id) => {
   return _.find(appServers, { id: id })
 }
 
+const parseMetrics = (data) => {
+  console.log(data)
+  return data
+}
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -133,7 +145,7 @@ export default (state = initialState, action) => {
   case SET_ACTIVE_METRICS:
     return {
       ...state,
-      activeMetricsData: action.data
+      activeMetricsData: parseMetrics(action.data)
     }  
   default:
     return state
