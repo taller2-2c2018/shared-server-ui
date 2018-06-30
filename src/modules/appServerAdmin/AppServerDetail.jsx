@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { getAppServerDetail } from './appServerReducer'
-import { Row, Col, Label, Button } from 'react-bootstrap'
+import { Row, Col, Label, Button, Glyphicon } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import RequestsGraph from './RequestsGraph'
 import { Cargando } from '../../utils/Cargando'
@@ -10,6 +10,7 @@ import history from '../../redux/history'
 export class AppServerIndex extends React.Component {
   constructor() {
     super()
+    this.recargar = this.recargar.bind(this)
   }
 
   componentDidMount() {
@@ -20,21 +21,31 @@ export class AppServerIndex extends React.Component {
     this.crearAppServerModal.wrappedInstance.abrirModal()
   }
 
+  recargar() {
+    this.props.getAppServerDetail(this.props.match.params.id)
+  }
+
   render() {
     if (this.props.active != null) {
       return (
         <Fragment>
           <Row>
-            <Col md={12}>
+            <Col lg={8} md={8} sm={8} xs={8}>
               <h2>App server: {this.props.active.name} </h2>
               <Label bsStyle={this.props.data?'success':'danger'}>
                 {this.props.data?'Online':'Offline'}
               </Label>
             </Col>
+
           </Row>
           <Row>
-            <Col md={6}>
+            <Col lg={11}>
               <h4>Requests / hora</h4>            
+            </Col>
+            <Col lg={1}>
+              <Button bsStyle="success" bsSize="xsmall" className="pull-right" onClick={this.recargar}>
+                <Glyphicon glyph="repeat" />Recargar
+              </Button>
             </Col>
           </Row>
           <Row>
