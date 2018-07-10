@@ -36,6 +36,17 @@ export const getNullConfig = () => ({
   }
 })
 
+export const getFirebaseConfig = () => ({
+  crossdomain: 'true',
+  dataType : 'jsonp',
+  headers: {
+    'crossdomain': 'true',
+    'dataType': 'jsonp',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': '*',
+  }
+})
+
 export const getMultipartFormDataConfig = () => ({
   headers: {
     'Authorization': getStoredToken(),

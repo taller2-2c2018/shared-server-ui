@@ -3,6 +3,7 @@ import axios from 'axios'
 const HYDRATE_FILES = 'HYDRATE_FILES'
 const QUERY_ERROR = 'QUERY_ERROR'
 const INTERNAL_ERROR = 'INTERNAL_ERROR'
+import fs from 'fs'
 
 const initialState = {
   result: [],
@@ -35,9 +36,10 @@ export const getFiles = () => dispatch => {
     })
 }
 
-export const uploadFile = (file) => dispatch => {
+export const uploadFile = (file,nombre) => dispatch => {
   let config = getMultipartFormDataConfig()
-  let body = getPostFileUploadBody(file)
+  var f = new File([file], nombre)
+  let body = getPostFileUploadBody(f)
   axios.post(api.files, body, config)
     .then(res => res.data.data)
     .then(() => {

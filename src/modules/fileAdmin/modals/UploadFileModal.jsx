@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Row, Col, Button, FormControl, FormGroup, ControlLabel, HelpBlock, Modal } from 'react-bootstrap'
 import { uploadFile } from '../fileReducer'
@@ -11,35 +12,46 @@ export class UploadFileModal extends React.Component {
       file: null,
       form: {
         archivo: { error: false, mensaje: '' },
+        name: { error: false, mensaje: '' },
       }
     }
     this.abrirModal = this.abrirModal.bind(this)
     this.cerrarModal = this.cerrarModal.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
-    this.updateFileUpload = this.updateFileUpload.bind(this)
   }
 
   resetForm() {
     let form = {
       archivo: { error: false, mensaje: '' },
+      name: { error: false, mensaje: '' },
     }
     this.setState({ ...this.state, form: form })
   }
 
-  validarForm(archivo) {
+  validarForm(archivo, nombre) {
     let formOk = true
 
     let form = {
       archivo: { error: false, mensaje: '' },
+      name: { error: false, mensaje: '' },
     }
 
     if (archivo == null || archivo == '') {
       form.archivo.error = true
-      form.archivo.mensaje = 'Tenés que seleccionar un archivo'
+      form.archivo.mensaje = 'Tenés que ingresar la url de un archivo'
       formOk = false
     } else {
       form.archivo.error = false
       form.archivo.mensaje = ''
+    }
+
+    if (nombre == null || nombre == '') {
+      form.name.error = true
+      form.name.mensaje = 'Tenés que ingresar el nombre del archivo'
+      formOk = false
+    } else {
+      form.name.error = false
+      form.name.mensaje = ''
     }
 
     this.setState({ ...this.state, form: form })
@@ -58,18 +70,12 @@ export class UploadFileModal extends React.Component {
   }
 
   onSubmit() {
-    let archivo = this.state.file
-    if (this.validarForm(archivo)) {
-      this.props.uploadFile(archivo)
+    let archivo = ReactDOM.findDOMNode(this.fileInput).value
+    let nombre = ReactDOM.findDOMNode(this.nameInput).value
+    if (this.validarForm(archivo,nombre)) {
+      this.props.uploadFile(archivo,nombre)
       this.cerrarModal()
     }
-  }
-
-  updateFileUpload(e) {
-    this.setState({
-      ...this.state,
-      file: e.target.files[0]
-    })
   }
 
   render() {
@@ -84,9 +90,22 @@ export class UploadFileModal extends React.Component {
         <Modal.Body>
           <Row key={'formCreateRow1'}>
             <Col md={12} lg={12}>
+              <FormGroup validationState={(this.state.form.name.error)? 'error' : null}>
+                <ControlLabel>Filename</ControlLabel>
+                <FormControl ref={nameInput => { this.nameInput = nameInput }} key="nameInput" type="text"
+                  placeholder={'Ingrese nombre del archivo'}>
+                </FormControl>
+              </FormGroup>
+              {this.state.form.archivo.error &&
+                <HelpBlock bsSize="small" >{this.state.form.name.mensaje}</HelpBlock>}
+            </Col>
+          </Row>
+          <Row key={'formCreateRow2'}>
+            <Col md={12} lg={12}>
               <FormGroup validationState={(this.state.form.archivo.error)? 'error' : null}>
-                <ControlLabel>Archivo</ControlLabel>
-                <FormControl onChange={this.updateFileUpload} key="archivoInput" type="file">
+                <ControlLabel>Url</ControlLabel>
+                <FormControl ref={fileInput => { this.fileInput = fileInput }} key="archivoInput" type="text"
+                  placeholder={'Ingrese la url del archivo'}>
                 </FormControl>
               </FormGroup>
               {this.state.form.archivo.error &&
@@ -104,8 +123,8 @@ export class UploadFileModal extends React.Component {
 }
 
 const mapDispatch = (dispatch) => ({
-  uploadFile: (archivo) => {
-    dispatch(uploadFile(archivo))
+  uploadFile: (archivo,nombre) => {
+    dispatch(uploadFile(archivo,nombre))
   }
 })
 

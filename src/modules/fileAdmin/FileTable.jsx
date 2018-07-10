@@ -4,7 +4,7 @@ import { Alert, Table, Button } from 'react-bootstrap'
 import FileDownload from 'js-file-download'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
-import { getFileConfig, api } from '../../api/apiInterfaceProvider'
+import { getFileConfig, getFirebaseConfig , api } from '../../api/apiInterfaceProvider'
 import DeleteFileModal from './modals/DeleteFileModal'
 
 export class FileTable extends React.Component {
@@ -21,9 +21,15 @@ export class FileTable extends React.Component {
 
   downloadAction(id, filename) {
     let config = getFileConfig()
+    let configFirebase = getFirebaseConfig()
     axios.get(api.file(id), config)
       .then((response) => {
-        FileDownload(response.data, filename)
+        const reader = new FileReader()
+        reader.readAsText(response.data)
+        reader.onload = function() {
+          console.log(reader.result)
+          window.location = reader.result
+        }
       })
   }
 
